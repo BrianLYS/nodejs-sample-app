@@ -1,0 +1,43 @@
+function createFileTree(jsonObj) {
+  // Create a new <ul> element
+  let ulElement = document.createElement("ul");
+
+  // Create a <li> for the current folder or file
+  let liElement = document.createElement("li");
+  liElement.textContent = jsonObj.name;
+
+  // Append the <li> to the <ul>
+  ulElement.appendChild(liElement);
+
+  // If it's a folder and has children, we need to recurse
+  if (jsonObj.type === "folder" && jsonObj.children) {
+    for (let child of jsonObj.children) {
+      let childElement = createFileTree(child);
+
+      // Append the result of the recursion (a <ul>) to the current <li>
+      liElement.appendChild(childElement);
+    }
+  }
+
+  // Return the <ul>
+  return ulElement;
+}
+
+// Load the JSON file structure
+let fileStructure = {
+  name: "Example-Folder",
+  type: "folder",
+  children: [
+    { name: "Cool.js", type: "file" },
+    { name: "Awesome.js", type: "file" },
+    {
+      name: "Another-Folder",
+      type: "folder",
+      children: [{ name: "WowSoDeep.js", type: "file" }],
+    },
+    { name: "lolol.js", type: "file" },
+  ],
+};
+
+// Run the function and append the result to the body of the page
+document.body.appendChild(createFileTree(fileStructure));
